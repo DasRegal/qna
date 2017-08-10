@@ -1,3 +1,4 @@
 class Question < ApplicationRecord
-  validates :title, :body, presence: true
+  validates :title, presence: true, length: { minimum: 5, maximum: 50  }
+  validates :body,  presence: true, length: { minimum: 5, maximum: 255 }
 end
