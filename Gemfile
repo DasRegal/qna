@@ -43,6 +43,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'rspec-rails'
   gem 'factory_girl'
+  gem 'rails-controller-testing'
 end
 
 group :development do
