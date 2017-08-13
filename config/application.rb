@@ -17,7 +17,7 @@ module Qna
   
     config.generators do |g|
       g.test_framework  :rspec,
-                        fixtures: true,
+                        fixture: true,
                         view_specs: false,
                         helper_specs: false,
                         routing_specs: false,
