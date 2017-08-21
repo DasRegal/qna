@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'User sign in', %q{
-  In order to be able to ask question_params
+  In order to be able to sign in
   As an user
   I want to be able to sign in
 } do
