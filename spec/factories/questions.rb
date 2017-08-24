@@ -2,7 +2,8 @@ FactoryGirl.define do
   factory :question do
     title "MyString"
     body  "MyText"
-    
+    user
+
     trait :with_answers do
       after(:create) do |question|
         create_list(:answer, 5, question: question)
@@ -13,5 +14,6 @@ FactoryGirl.define do
   factory :invalid_question, class: "Question" do
     title nil
     body  nil
+    user
   end
 end

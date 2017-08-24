@@ -6,10 +6,10 @@ feature 'Create answer', %q{
   I want to be able to create answer
 } do
   
+  given(:question) { create(:question) }
   given(:user) { create(:user) }
   
   scenario 'Authenticated user creates answer' do
-    question = create(:question)
     sign_in(user)
     
     visit question_path(question)
@@ -21,7 +21,6 @@ feature 'Create answer', %q{
   end
   
   scenario 'Non-authenticated user tries to answer to question' do
-    question = create(:question)
     visit question_path(question)
     click_on 'Create Answer'
     

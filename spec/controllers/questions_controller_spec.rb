@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  let(:question) { create(:question) }
+  let(:user_with_questions) { create(:user, :with_questions) }
+  
   describe 'GET #new' do
     sign_in_user
     
@@ -38,6 +41,23 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, params: { question: attributes_for(:invalid_question) }
         expect(response).to render_template :new
       end
+    end
+  end
+  
+  describe 'DELETE #destroy' do
+    before do
+      @user = create(:user, :with_questions)
+      @request.env['devise.mapping'] = Devise.mappings[:user]
+      sign_in @user
+    end
+    
+    it 'deletes question' do
+      expect { delete :destroy, params: { id: @user.questions.first, user_id: @user} }.to change(Question, :count).by(-1)
+    end
+    
+    it 'redirect to index' do
+      delete :destroy, params: { id: @user.questions.first, user_id: @user}
+      expect(response).to redirect_to questions_path
     end
   end
 end

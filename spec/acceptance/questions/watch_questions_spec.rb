@@ -16,7 +16,7 @@ feature 'Watch questions', %q{
     question = create(:question)
     visit question_path(question)
 
-    expect(page).to have_content 'Answer to question'
+    expect(page).to have_content 'Answers to question'
   end
   
 end
