@@ -30,6 +30,11 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to question_path(assigns(:question))
       end
+      
+      it 'check current_user is author' do 
+        post :create, params: { question: attributes_for(:question) }
+        expect(assigns(:question).user).to eq @user
+      end
     end
     
     context 'vith invalid attributes' do

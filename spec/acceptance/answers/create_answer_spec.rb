@@ -13,7 +13,6 @@ feature 'Create answer', %q{
     sign_in(user)
     
     visit question_path(question)
-    fill_in 'Title', with: 'Text answer'
     fill_in 'Body', with: 'Body text'
     click_on 'Create Answer'
     
