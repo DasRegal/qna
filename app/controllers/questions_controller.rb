@@ -2,6 +2,10 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :load_question, only: [ :show, :destroy ]
   
+  def index
+    @questions = Question.all
+  end
+  
   def show
   end
   
@@ -21,7 +25,7 @@ class QuestionsController < ApplicationController
   end
   
   def destroy
-    if @question.user == current_user
+    if current_user.author_of?(@question)
       @question.destroy
       flash[:notice] = 'Your question is deleted.'
       redirect_to questions_path
@@ -40,13 +44,4 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:title, :body)
   end
-  
-  def is_author?(question)
-    if question.user_id == current_user.id
-      return true
-    else
-      return false
-    end
-  end
-  
 end

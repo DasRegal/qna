@@ -12,14 +12,16 @@ feature 'Delete answer', %q{
   scenario 'Author can delete answer' do
     sign_in(user)
     question_with_answers.answers.update_all(user_id: user.id)
+    question_with_answers.answers.first.update(body: "Foobar")
     
     visit question_path(question_with_answers)
     click_on 'Delete answer', match: :first
     
     expect(page).to have_content 'Your answer is deleted.'
+    expect(page).to_not have_content 'Foobar'
   end
   
-  scenario 'Any user can delete question' do
+  scenario 'Any user can not delete answer' do
     sign_in(user)
 
     visit question_path(question_with_answers)

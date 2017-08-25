@@ -4,20 +4,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question_with_answers) { create(:question, :with_answers) }
   let(:question) { create(:question) }
   
-  describe 'GET #new' do
-    sign_in_user
-    
-    before { get :new, params: {question_id: question} }
-    
-    it 'assigns a new Answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-    
-    it 'render new view' do
-      expect(response).to render_template :new
-    end
-  end
-  
   describe 'POST #create' do
     sign_in_user
     
@@ -39,7 +25,37 @@ RSpec.describe AnswersController, type: :controller do
       
       it 're-render new view' do
         post :create, params: { answer: attributes_for(:invalid_answer), question_id: question }
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
+      end
+    end
+  end
+  
+  describe 'DELETE #destroy' do
+    context 'users answer' do
+      sign_in_user
+      before { question_with_answers.answers.first.update(user_id: @user.id) }
+      
+      it 'deletes answer' do 
+        expect { delete :destroy, params: { question_id: question_with_answers, id: question_with_answers.answers.first } }.to change(Answer, :count).by(-1) 
+      end
+
+      it 'redirect to parent question show' do 
+        delete :destroy, params: { question_id: question_with_answers, id: question_with_answers.answers.first }
+        expect(response).to redirect_to question_path(question_with_answers)
+      end
+    end
+    
+    context 'not users answer' do
+      sign_in_user
+      before { question_with_answers }
+
+      it 'deletes answer' do 
+        expect { delete :destroy, params: { question_id: question_with_answers, id: question_with_answers.answers.first } }.to_not change(Answer, :count)
+      end
+
+      it 'redirect to parent question show' do 
+        delete :destroy, params: { question_id: question_with_answers, id: question_with_answers.answers.first }
+        expect(response).to redirect_to question_path(question_with_answers)
       end
     end
   end

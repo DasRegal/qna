@@ -1,7 +1,15 @@
 FactoryGirl.define do
+  sequence :title do |n|
+    "Title  text#{n}"
+  end
+
+  sequence :body do |n|
+    "Question text#{n}"
+  end
+  
   factory :question do
-    title "MyString"
-    body  "MyText"
+    title
+    body
     user
 
     trait :with_answers do
