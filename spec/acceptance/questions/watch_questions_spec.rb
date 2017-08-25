@@ -20,9 +20,12 @@ feature 'Watch questions', %q{
   
   scenario 'Any user watch any question' do
     question = create(:question)
+    question.update(title: 'Title text', body: 'Question text')
     visit question_path(question)
 
     expect(page).to have_content 'Answers to question'
+    expect(page).to have_content 'Title text'
+    expect(page).to have_content 'Question text'
   end
   
 end
