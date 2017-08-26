@@ -8,12 +8,9 @@ class AnswersController < ApplicationController
     @answer.user = current_user
     if @answer.save
       flash[:notice] = 'Your answer successfully created.'
-      redirect_to question_path(@question)
     else
       flash[:notice] = 'Your answer is not create.'
-      render 'questions/show'
     end
-    
   end
   
   def destroy
