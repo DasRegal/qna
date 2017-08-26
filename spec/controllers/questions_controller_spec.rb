@@ -2,7 +2,20 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
+  let(:questions) { create_list(:question, 10) }
   let(:user_with_questions) { create(:user, :with_questions) }
+  
+  describe 'GET #index' do
+    before { get :index }
+    
+    it 'populates in array of all questions' do
+      expect(assigns(:questions)).to match_array(questions)
+    end
+    
+    it 'render index view' do
+      expect(response).to render_template :index
+    end
+  end
   
   describe 'GET #new' do
     sign_in_user
