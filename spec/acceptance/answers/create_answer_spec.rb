@@ -24,9 +24,8 @@ feature 'Create answer', %q{
   
   scenario 'Non-authenticated user tries to answer to question', js: true do
     visit question_path(question)
-    click_on 'Create Answer'
     
-    expect(page).to_not have_content 'Your answer successfully created.'
+    expect(page).to_not have_content 'Create Answer'
   end
   
   scenario 'Authenticated user tries to creates invalid answer', js: true do
@@ -35,6 +34,7 @@ feature 'Create answer', %q{
     click_on 'Create Answer'
 
     expect(page).to have_content 'Your answer is not create.'
+    expect(page).to have_content 'Body can\'t be blank'
   end
   
 end

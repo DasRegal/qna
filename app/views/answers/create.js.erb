@@ -1,4 +1,9 @@
 $('.notice').html("<%= notice %>");
 $('.alert').html("<%= alert %>");
 $('.answers').append('<%= j render @answer %>');
-$('#answer_body').val('')
+$('#answer_body').val('');
+<% if @answer&.errors %>
+  <% @answer.errors.full_messages.each do |msg| %>
+    $('#validations_errors').append('<p><%= msg %>');
+  <% end %>
+<% end %>
