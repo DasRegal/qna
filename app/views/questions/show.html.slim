@@ -7,8 +7,7 @@ h1 Answers to question
 .answers
   = render @question.answers
   
--if @answer&.errors
-  div id='validations_errors'
+div id='validations_errors'
 
 -if current_user
   = form_for [@question, @answer], remote: true do |f|
