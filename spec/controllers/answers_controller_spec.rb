@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question_with_answers) { create(:question, :with_answers) }
-  let(:question) { create(:question) }
+  let!(:question) { create(:question) }
   
   describe 'POST #create' do
     sign_in_user
@@ -42,12 +42,12 @@ RSpec.describe AnswersController, type: :controller do
       before { answer.update(user_id: @user.id) }
       
       it 'deletes answer' do 
-        expect { delete :destroy, params: { question_id: question_with_answers, id: answer } }.to change(Answer, :count).by(-1) 
+        expect { delete :destroy, params: { question_id: question_with_answers, id: answer, format: :js } }.to change(Answer, :count).by(-1) 
       end
 
       it 'redirect to parent question show' do 
-        delete :destroy, params: { question_id: question_with_answers, id: answer }
-        expect(response).to redirect_to question_path(question_with_answers)
+        delete :destroy, params: { question_id: question_with_answers, id: answer, format: :js }
+        expect(response).to render_template :destroy
       end
     end
     
@@ -56,13 +56,39 @@ RSpec.describe AnswersController, type: :controller do
       before { question_with_answers }
 
       it 'deletes answer' do 
-        expect { delete :destroy, params: { question_id: question_with_answers, id: answer } }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { question_id: question_with_answers, id: answer, format: :js } }.to_not change(Answer, :count)
       end
 
       it 'redirect to parent question show' do 
-        delete :destroy, params: { question_id: question_with_answers, id: answer }
-        expect(response).to redirect_to question_path(question_with_answers)
+        delete :destroy, params: { question_id: question_with_answers, id: answer, format: :js }
+        expect(response).to render_template :destroy
       end
+    end
+  end
+  
+  describe 'patch #UPDATE' do
+    sign_in_user
+    let(:answer) { create(:answer, question: question, user: @user) }
+    
+    it 'assigns the requested answer to @answer' do
+      patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+      expect(assigns(:answer)).to eq answer
+    end
+    
+    it 'assigns the requested question for @question' do
+      patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+      expect(assigns(:question)).to eq question
+    end
+    
+    it 'changes answer attributes' do
+      patch :update, params: { id: answer, question_id: question, answer: {body: 'New body'}, format: :js }
+      answer.reload
+      expect(answer.body).to eq 'New body'
+    end
+    
+    it 'render update template' do
+      patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+      expect(response).to render_template :update
     end
   end
 end

@@ -9,7 +9,7 @@ feature 'Delete answer', %q{
   given(:question_with_answers) { create(:question, :with_answers)}
   given(:user) { create(:user) }
   
-  scenario 'Author can delete answer' do
+  scenario 'Author can delete answer', js: true do
     sign_in(user)
     question_with_answers.answers.update_all(user_id: user.id)
     question_with_answers.answers.first.update(body: "Foobar")

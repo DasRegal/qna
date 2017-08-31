@@ -6,6 +6,5 @@ $('.alert').html("<%= alert %>");
     $('#answer_validations_errors').append('<p><%= msg %>');
   <% end %>
 <% else %>
-  $('.answers').append('<%= j render @answer %>');
-  $('textarea#answer_body').val('');
+  $('.answers').html('<%= j render @answer %>');
 <% end %>

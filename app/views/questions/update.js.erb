@@ -1,0 +1,13 @@
+$('.notice').html("<%= notice %>");
+$('.alert').html("<%= alert %>");
+
+<% if @question.errors.present? %>
+  <% @question.errors.full_messages.each do |msg| %>
+    $('#question_validations_errors').append('<p><%= msg %>');
+  <% end %>
+<% else %>
+  $('.question_body').html('<%= j @question.body %>');
+  $('.question_title').html('<%= j @question.title %>');
+  $('.edit-question-link').show();
+  $('form#edit-question').hide();
+<% end %>

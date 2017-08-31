@@ -1,4 +1,10 @@
 -if answer.persisted?
-  p =answer.body
-  -if current_user&.author_of?(answer)
-    =link_to 'Delete answer', question_answer_path(@question, answer), method: :delete
+  div id="answer_id_#{answer.id}"
+    p= answer.body
+    -if current_user&.author_of?(answer)
+      p= link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, class: 'delete-answer-link', data: { answer_id: answer.id}, remote: true
+      p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id}
+      p= form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+        =f.label :body, "Answer"
+        =f.text_area :body
+        =f.submit 'Save'

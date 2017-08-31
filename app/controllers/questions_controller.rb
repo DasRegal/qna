@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
-  before_action :load_question, only: [ :show, :destroy ]
+  before_action :load_question, only: [ :show, :destroy, :update ]
   
   def index
     @questions = Question.all
@@ -12,6 +12,15 @@ class QuestionsController < ApplicationController
   
   def new
     @question = Question.new
+  end
+  
+  def update
+    if current_user.author_of?(@question)
+      @question.update(question_params)
+      flash[:notice] = 'Your question is updated.'
+    else
+      flash[:notice] = 'You are not the author.'
+    end
   end
 
   def create
