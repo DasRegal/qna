@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
-  before_action :load_answer, only: [ :destroy ]
-  before_action :load_question, only: [ :create, :destroy ]
+  before_action :load_answer, only: [ :destroy, :favorite ]
+  before_action :load_question, only: [ :create, :destroy, :favorite ]
   
   def create
     @answer = @question.answers.new(answer_params)
@@ -28,6 +28,16 @@ class AnswersController < ApplicationController
     if current_user.author_of?(@answer)
       @answer.destroy
       flash[:notice] = 'Your answer is deleted.'
+    else
+      flash[:notice] = 'You are not the author.'
+    end
+  end
+  
+  def favorite
+    if current_user.author_of?(@question)
+      @question.answers.update_all(is_favorite: false)
+      @answer.update(is_favorite: true)
+      flash[:notice] = 'Add favorite answer'
     else
       flash[:notice] = 'You are not the author.'
     end
