@@ -35,8 +35,7 @@ class AnswersController < ApplicationController
   
   def favorite
     if current_user.author_of?(@question)
-      @question.answers.update_all(is_favorite: false)
-      @answer.update(is_favorite: true)
+      @answer.set_favorite
       flash[:notice] = 'Add favorite answer'
     else
       flash[:notice] = 'You are not the author.'

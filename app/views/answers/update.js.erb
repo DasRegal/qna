@@ -6,5 +6,7 @@ $('.alert').html("<%= alert %>");
     $('#answer_validations_errors').append('<p><%= msg %>');
   <% end %>
 <% else %>
-  $('.answers').html('<%= j render @answer %>');
+  $('.answer_body_id_<%= @answer.id %>').html('<%= j @answer.body %>');
+  $('form#edit-answer-<%= @answer.id%>').hide();
+  $('.edit-answer-link').show();
 <% end %>

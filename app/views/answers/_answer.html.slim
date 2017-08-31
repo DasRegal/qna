@@ -1,9 +1,10 @@
 -if answer.persisted?
   div id="answer_id_#{answer.id}" class=(answer.is_favorite ? "answer favorite" : "answer")
-    p= answer.body
+    div class="answer_body_id_#{answer.id}"
+      =answer.body
     -if current_user&.author_of?(answer)
       p= link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, class: 'delete-answer-link', data: { answer_id: answer.id}, remote: true
-      -if !answer.is_favorite
+      -unless answer.is_favorite
         p= link_to 'Favorite', favorite_question_answer_path(@question, answer), method: :patch, remote: true
       p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       p= form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|

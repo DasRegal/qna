@@ -17,7 +17,7 @@
 
 h1 Answers to question
 .answers
-  = render @question.answers.order(is_favorite: :desc)
+  = render @question.answers.favorit_order
   
 div id='answer_validations_errors'
 

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   
   resources :questions do
     resources :answers do
-      patch 'favorite', on: :member
+      patch :favorite, on: :member
     end
   end
 end
