@@ -28,4 +28,15 @@ feature 'Favorite answer', %q{
     expect(page).to_not have_link 'Favorite'
   end
   
+  scenario 'Choose only one favorite answer' do
+    sign_in(user)
+    question = create :question, :with_answers
+    question.answers.each do |answer|
+      answer.set_favorite
+    end
+    question.answers.reload
+
+    expect(question.answers.where(is_favorite: true).count).to eq 1
+  end
+  
 end

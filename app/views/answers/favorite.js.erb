@@ -3,4 +3,4 @@ $('.alert').html("<%= alert %>");
 
 $('.answer').removeClass('favorite')
 $('#answer_id_<%= @answer.id %>').addClass('favorite');
-$('.answers').html('<%= j render @question.answers.favorit_order %>')
+$('.answers').html('<%= j render @question.answers.favorite_order %>')

@@ -91,4 +91,26 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to render_template :update
     end
   end
+  
+  describe 'PATCH #favorite' do
+    sign_in_user
+    let(:question_of_author) { create(:question, user: @user) }
+    let(:answer) { create(:answer, question: question, user: @user) }
+    
+    it 'assigns the requested question and answer' do
+      patch :favorite, params: { id: answer, question_id: question, format: :js }
+      expect(assigns(:question)).to eq question
+      expect(assigns(:answer)).to eq answer
+    end
+    
+    it 'Author of question try to choose favorite' do
+      patch :favorite, params: { id: answer, question_id: question_of_author, format: :js }
+      answer.reload
+      expect( answer.is_favorite ).to eq true
+    end
+    
+    it 'Any user try to choose favorite' do
+      expect { patch :favorite, params: { id: answer, question_id: question, format: :js } }.to_not change(answer, :is_favorite)
+    end
+  end
 end
