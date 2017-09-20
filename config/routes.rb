@@ -7,4 +7,7 @@ Rails.application.routes.draw do
       patch :favorite, on: :member
     end
   end
+  
+  delete '/attachment/:id', to: 'attachments#destroy', as: :destroy_attachment
+  
 end

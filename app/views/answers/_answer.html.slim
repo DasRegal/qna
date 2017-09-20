@@ -2,6 +2,9 @@
   div id="answer_id_#{answer.id}" class=(answer.is_favorite ? "answer favorite" : "answer")
     div class="answer_body_id_#{answer.id}"
       =answer.body
+      p Attachments:
+      ul.a_attachments_container
+      = render 'share/attachments', obj: answer
     -if current_user&.author_of?(answer)
       p= link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, class: 'delete-answer-link', data: { answer_id: answer.id}, remote: true
       -unless answer.is_favorite

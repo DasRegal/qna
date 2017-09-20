@@ -24,9 +24,9 @@ feature 'Answer editing', %q{
     fill_in 'Body', with: 'First text'
     click_on 'Create Answer'
     visit question_path(question)
-    click_on 'Edit' 
+    
     within '.answers' do
-       
+      click_on 'Edit'    
       fill_in 'Answer', with: 'edited answer'
       click_on 'Save'
       

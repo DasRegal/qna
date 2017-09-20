@@ -4,6 +4,8 @@ RSpec.describe Answer, type: :model do
   it { should validate_presence_of :body}
   it { should validate_length_of(:body).is_at_most(255) }
   it { should belong_to(:question) }
+  it { should have_many :attachments }
+  it { should accept_nested_attributes_for :attachments }
   
   describe '#set_favorite' do
     let(:question_with_answers) { create(:question, :with_answers) }
