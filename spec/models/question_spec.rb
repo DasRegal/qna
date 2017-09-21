@@ -7,5 +7,5 @@ RSpec.describe Question, type: :model do
   it { should validate_length_of(:body).is_at_least(5).is_at_most(255) }
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many :attachments }
-  it { should accept_nested_attributes_for :attachments }
+  it { should accept_nested_attributes_for(:attachments).allow_destroy(true) }
 end

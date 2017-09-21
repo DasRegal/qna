@@ -4,7 +4,7 @@
       =answer.body
       p Attachments:
       ul.a_attachments_container
-      = render 'share/attachments', obj: answer
+        = render 'share/attachments', obj: answer
     -if current_user&.author_of?(answer)
       p= link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, class: 'delete-answer-link', data: { answer_id: answer.id}, remote: true
       -unless answer.is_favorite

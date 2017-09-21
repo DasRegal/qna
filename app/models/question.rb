@@ -1,7 +1,7 @@
 class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   belongs_to :user
-  has_many :attachments, as: :attachable
+  has_many :attachments, as: :attachable, dependent: :destroy
   
   validates :title, presence: true, length: { minimum: 5, maximum: 50  }
   validates :body,  presence: true, length: { minimum: 5, maximum: 255 }
