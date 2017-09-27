@@ -4,6 +4,15 @@
       =@question.title
   .question_body
     =@question.body
+  p.total_votes data-id=@question.id 
+    =@question.votes.sum(:count)
+    .error_vote
+  -if current_user && !current_user.author_of?(@question)
+    p.vote_up.vote
+      =link_to 'vote_up', polymorphic_path([:vote_up, @question]), method: :post, remote: true
+    p.vote_down.vote
+      =link_to 'vote_down', polymorphic_path([:vote_down, @question]), method: :post, remote: true
+    
   p Attachments:
   ul.q_attachments_container
     = render 'share/attachments', obj: @question
