@@ -113,4 +113,83 @@ RSpec.describe AnswersController, type: :controller do
       expect { patch :favorite, params: { id: answer, question_id: question, format: :js } }.to_not change(answer, :is_favorite)
     end
   end
+  
+  describe 'PATCH #vote_up' do 
+    sign_in_user
+    let(:answer) { create(:answer) }
+    context 'non author try to vote up' do 
+      context 'user already has vote' do 
+        before do 
+          create(:vote, :up, user: @user, votable: answer)
+          answer.update(question: question)
+        end
+
+        it 'dont change votes' do 
+          expect{ patch :vote_up, params: { question_id: question, id: answer } }.to_not change(answer.votes, :count)
+        end
+
+        it 'render error' do 
+          patch :vote_up, params: { question_id: question, id: answer }
+          expect(response.body).to eq 'You already voted'
+        end
+
+        it 'response error 422' do 
+          patch :vote_up, params: { question_id: question, id: answer }
+          expect(response).to have_http_status(422)
+        end
+      end
+    end
+
+    context 'answer author try to vote up' do 
+      before { answer.update(user: @user, question: question) }
+      it 'dont change votes' do 
+        expect{ patch :vote_up, params: {question_id: question,  id: answer } }.to_not change(answer.votes, :count)
+      end
+
+      it 'response error 422' do 
+        patch :vote_up, params: { question_id: question, id: answer }
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
+
+  describe 'PATCH #vote_down' do 
+    sign_in_user
+    let(:answer) { create(:answer) }
+    context 'non author try to vote down' do 
+      context 'user already has vote' do 
+        before do 
+          create(:vote, :down, user: @user, votable: answer)
+          answer.update(question: question)
+        end
+
+        it 'dont change votes' do 
+          expect{ patch :vote_down, params: { question_id: question, id: answer } }.to_not change(answer.votes, :count)
+        end
+
+        it 'render error' do 
+          patch :vote_down, params: { question_id: question, id: answer }
+          expect(response.body).to eq 'You already voted'
+        end
+
+        it 'response error 422' do 
+          patch :vote_down, params: { question_id: question, id: answer }
+          expect(response).to have_http_status(422)
+        end
+      end
+    end
+
+    context 'answer author try to vote down' do 
+      before { answer.update(user: @user, question: question) }
+
+      it 'dont change votes' do 
+        expect{ patch :vote_down, params: {question_id: question,  id: answer } }.to_not change(answer.votes, :count)
+      end
+
+      it 'response error 422' do 
+        patch :vote_down, params: { question_id: question, id: answer }
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
 end
